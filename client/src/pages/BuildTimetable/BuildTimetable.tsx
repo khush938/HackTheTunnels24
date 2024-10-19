@@ -16,7 +16,6 @@ function BuildTimetable() {
   const { jwt } = useAccountContext();
   const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>([]);
   const [selectedEvents, setSelectedEvents] = useState<ScheduledEvent[]>([]);
-  const [timetableName, setTimetableName] = useState<string>(""); // State for timetable name
   const navigate = useNavigate();
 
   const fetchScheduledEvents = async () => {
@@ -29,7 +28,6 @@ function BuildTimetable() {
       new Date().toISOString(),
       selectedEvents.map((event) => event.id.toString()),
       jwt,
-      timetableName // Pass the timetable name
     );
 
     navigate(`/timetables/${result.data.id}`);
@@ -71,15 +69,6 @@ function BuildTimetable() {
             selectedEvents={selectedEvents.map((event: ScheduledEvent) =>
               scheduledEventToCalendarBlock(event),
             )}
-          />
-        </Section>
-        {/* New Section for entering timetable name */}
-        <Section title="Timetable Name">
-          <input
-            type="text"
-            placeholder="Enter timetable name"
-            value={timetableName}
-            onChange={(e) => setTimetableName(e.target.value)}
           />
         </Section>
       </div>
