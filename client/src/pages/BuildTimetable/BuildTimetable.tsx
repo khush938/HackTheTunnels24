@@ -16,6 +16,7 @@ function BuildTimetable() {
   const { jwt } = useAccountContext();
   const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>([]);
   const [selectedEvents, setSelectedEvents] = useState<ScheduledEvent[]>([]);
+  const [timetableName, setTimetableName] = useState(""); // State for the timetable name
   const navigate = useNavigate();
 
   const fetchScheduledEvents = async () => {
@@ -28,6 +29,7 @@ function BuildTimetable() {
       new Date().toISOString(),
       selectedEvents.map((event) => event.id.toString()),
       jwt,
+      timetableName // Include the name in the API call
     );
 
     navigate(`/timetables/${result.data.id}`);
@@ -55,6 +57,19 @@ function BuildTimetable() {
             />
           </Section>
         )}
+        {/* Input field for timetable name */}
+        <Section title="Timetable Name">
+          <div className="timetable-name-input">
+            <label htmlFor="timetableName">Timetable Name:</label>
+            <input
+              type="text"
+              id="timetableName"
+              value={timetableName}
+              onChange={(e) => setTimetableName(e.target.value)}
+              placeholder="Enter a name for your timetable"
+            />
+          </div>
+        </Section>
         {selectedEvents.length > 0 && (
           <Section title="Worksheet">
             <WorksheetSection
@@ -67,7 +82,7 @@ function BuildTimetable() {
         <Section title="Draft Timetable">
           <TimetableSection
             selectedEvents={selectedEvents.map((event: ScheduledEvent) =>
-              scheduledEventToCalendarBlock(event),
+              scheduledEventToCalendarBlock(event)
             )}
           />
         </Section>

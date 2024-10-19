@@ -1,28 +1,38 @@
 @import "../../../globals.scss";
 
 .Banner {
-  padding: 0.75rem;
+  padding: 1rem;
   width: 100%;
   display: flex;
   align-items: center;
-  height: 3rem;
-  background-color: $theme;
-  gap: 2rem;
+  justify-content: center;
+  height: 4rem;
+  background-color: $black;
+  gap: 1.5rem;
+  border-bottom: 0.2rem solid $theme--dark;
 
   img {
-    height: 3rem;
+    height: 3.5rem;
   }
 
-  &__seperator {
+  &__separator {
     height: 100%;
-    opacity: 0.3;
-    background-color: white;
-    width: 0.13rem;
+    opacity: 0.5;
+    background-color: $theme;
+    width: 0.15rem;
   }
 
   &__title {
     font-family: "Roboto", sans-serif;
-    color: white;
-    font-size: 1.6rem;
+    color: $theme;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
+  }
+
+  &__subtitle {
+    font-family: "Roboto", sans-serif;
+    color: $white;
+    font-size: 1.2rem;
   }
 }
