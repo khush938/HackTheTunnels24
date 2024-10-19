@@ -41,6 +41,7 @@ model ScheduledEvent {
   createdAt                          DateTime         @default(now())
   updatedAt                          DateTime         @updatedAt
   timetableEvents                    TimetableEvent[]
+  maxRegistration                    Int              @default(-999)
 }
 
 model TimetableEvent {

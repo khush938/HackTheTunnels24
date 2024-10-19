@@ -2,6 +2,20 @@ import { Timetable } from "@prisma/client";
 import { prisma } from "../db";
 import { Result, Ok, Err } from "ts-results";
 import { AccountService } from ".";
+const nodemailer = require("nodemailer");
+
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "alerttimetable@gmail.com",
+    pass: "ttrt bryy halz uqys",
+  },
+});
+
 
 export const createTimetable = async (
   email: string,
@@ -13,6 +27,37 @@ export const createTimetable = async (
   if (account === null) {
     return Err(new Error("Account not found"));
   }
+
+  const mailOptions = {
+    from: "alerttimetable@gmail.com",
+    to: account.email,
+    subject: "Notification for Succesful Registration",
+    text: "This is a notification from carleton, to inform you that you have just made a timetable!",
+  };
+
+  const scheduledEvents = await prisma.scheduledEvent.findMany({
+    where: {
+      id: {
+        in: scheduledEventIds.map((id) => parseInt(id)),
+      },
+    },
+  });
+
+  for (let i = 0; i < scheduledEvents.length; i++) {
+    for (let j = i + 1; j < scheduledEvents.length; j++) {
+      const eventA = scheduledEvents[i];
+      const eventB = scheduledEvents[j];
+
+      
+      if (
+        (eventA.startTime < eventB.endTime && eventA.endTime > eventB.startTime) ||
+        (eventB.startTime < eventA.endTime && eventB.endTime > eventA.startTime)
+      ) {
+        return Err(new Error("Events overlap"));
+      }
+    }
+  }
+
 
   const timetable = await prisma.timetable.create({
     data: {
@@ -33,7 +78,13 @@ export const createTimetable = async (
       },
     },
   });
-
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email: ", error);
+    } else {
+      console.log("Email sent: ", info.response);
+    }
+  });
   return Ok(timetable);
 };
 
