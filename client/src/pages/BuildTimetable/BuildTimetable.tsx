@@ -16,7 +16,7 @@ function BuildTimetable() {
   const { jwt } = useAccountContext();
   const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>([]);
   const [selectedEvents, setSelectedEvents] = useState<ScheduledEvent[]>([]);
-  const [timetableName, setTimetableName] = useState(""); // State for the timetable name
+  const [timetableName, setTimetableName] = useState<string>(""); // State for timetable name
   const navigate = useNavigate();
 
   const fetchScheduledEvents = async () => {
@@ -25,18 +25,16 @@ function BuildTimetable() {
   };
 
   const createTimetable = async () => {
-    console.log("Timetable Name:", timetableName); // Debugging
     const result = await ServiceAPI.createTimetable(
       new Date().toISOString(),
       selectedEvents.map((event) => event.id.toString()),
       jwt,
-      timetableName // Ensure the name is being sent correctly
+      timetableName // Pass the timetable name
     );
-    console.log("API Response:", result); // Debugging
+
     navigate(`/timetables/${result.data.id}`);
   };
-  
-  
+
   const addEvent = (event: ScheduledEvent) => {
     setSelectedEvents([...selectedEvents, event]);
   };
@@ -59,19 +57,6 @@ function BuildTimetable() {
             />
           </Section>
         )}
-        {/* Input field for timetable name */}
-        <Section title="Timetable Name">
-          <div className="timetable-name-input">
-            <label htmlFor="timetableName">Timetable Name:</label>
-            <input
-              type="text"
-              id="timetableName"
-              value={timetableName}
-              onChange={(e) => setTimetableName(e.target.value)}
-              placeholder="Enter a name for your timetable"
-            />
-          </div>
-        </Section>
         {selectedEvents.length > 0 && (
           <Section title="Worksheet">
             <WorksheetSection
@@ -84,8 +69,17 @@ function BuildTimetable() {
         <Section title="Draft Timetable">
           <TimetableSection
             selectedEvents={selectedEvents.map((event: ScheduledEvent) =>
-              scheduledEventToCalendarBlock(event)
+              scheduledEventToCalendarBlock(event),
             )}
+          />
+        </Section>
+        {/* New Section for entering timetable name */}
+        <Section title="Timetable Name">
+          <input
+            type="text"
+            placeholder="Enter timetable name"
+            value={timetableName}
+            onChange={(e) => setTimetableName(e.target.value)}
           />
         </Section>
       </div>

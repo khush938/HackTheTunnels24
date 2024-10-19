@@ -12,6 +12,7 @@
   label {
     margin-right: 0.5rem;
     font-weight: bold;
+    font-size: 1rem;
   }
 
   input {
@@ -20,5 +21,13 @@
     border: 1px solid #ccc;
     width: 100%;
     max-width: 400px;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #007bff;
+      outline: none;
+    }
   }
 }
