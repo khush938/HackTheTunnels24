@@ -30,12 +30,12 @@ function BuildTimetable() {
       new Date().toISOString(),
       selectedEvents.map((event) => event.id.toString()),
       jwt,
-      timetableName // Include the name in the API call
+      timetableName // Ensure the name is being sent correctly
     );
-  
     console.log("API Response:", result); // Debugging
     navigate(`/timetables/${result.data.id}`);
   };
+  
   
   const addEvent = (event: ScheduledEvent) => {
     setSelectedEvents([...selectedEvents, event]);
