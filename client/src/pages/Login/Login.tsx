@@ -4,47 +4,51 @@ import { Base as Layout } from "@/layouts";
 import "./Login.style.scss";
 
 function Login() {
-  const [message, setMessage] = useState(null);
+  // Set initial state values to empty strings
+  const [email, setEmail] = useState("admin@email.com"); 
+  const [password, setPassword] = useState("password"); 
+  const [message, setMessage] = useState(null); 
   const { login } = useAccountContext();
 
   const attemptLogin = async () => {
     try {
-      const message = await login("admin@email.com", "password");
-      setMessage(message);
+      console.log("Email:", email); 
+      console.log("Password:", password); 
+      const message = await login(email, password); 
+      setMessage(message); 
     } catch (error) {
-      console.log(error);
+      setMessage("Invalid login credentials"); 
     }
   };
 
   return (
     <Layout>
-      <div className="Login"></div>
-      <div className="Login__panel">
-        <div className="Login__panel__content">
-          <img src="/carleton_logo_black.png"></img>
-          <div className="Login__panel__content__message">
-            <div>Welcome to the Carleton SSO Federated Portal.</div>
-            <div>
-              Enter your{" "}
-              <a href="https://myone.carleton.ca" target="blank">
-                MyCarletonOne
-              </a>{" "}
-              username and password.
-            </div>
-          </div>
-          {message && <p>{message}</p>}
-          <div className="Login__panel__content__input">
-            <input type="text" placeholder="MyCarletonOne username"></input>
-            <input type="password" placeholder="Password"></input>
-          </div>
+      <div className="Login">
+        <div className="Login__background" />
+        <div className="Login__content">
+          <img
+            src="/carleton_logo_black-removebg-preview.png"
+            alt="Carleton Logo"
+            className="Login__logo"
+          />
+          {message && <p className="error-message">{message}</p>}
+          <input
+            type="text"
+            placeholder="Enter your MyCarletonOne username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} // Update email state on change
+          />
+          <input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} // Update password state on change
+          />
           <div className="Login__panel__content__checkbox">
-            <input type="checkbox"></input>
-            <label>Keep me signed in</label>
+            {/* <input type="checkbox" id="keepSignedIn" /> */}
+            {/* <label htmlFor="keepSignedIn">Keep me signed in</label> */}
           </div>
-          <button
-            className="Login__panel__button"
-            onClick={() => attemptLogin()}
-          >
+          <button className="Login__button" onClick={attemptLogin}>
             Sign In
           </button>
         </div>
