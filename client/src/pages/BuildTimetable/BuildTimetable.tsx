@@ -25,16 +25,18 @@ function BuildTimetable() {
   };
 
   const createTimetable = async () => {
+    console.log("Timetable Name:", timetableName); // Debugging
     const result = await ServiceAPI.createTimetable(
       new Date().toISOString(),
       selectedEvents.map((event) => event.id.toString()),
       jwt,
       timetableName // Include the name in the API call
     );
-
+  
+    console.log("API Response:", result); // Debugging
     navigate(`/timetables/${result.data.id}`);
   };
-
+  
   const addEvent = (event: ScheduledEvent) => {
     setSelectedEvents([...selectedEvents, event]);
   };
